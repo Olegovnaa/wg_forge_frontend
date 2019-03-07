@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <title>WG Forge Test</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        th[data-name] {
+            cursor: pointer;
+        }
+
+        th:hover {
+            background: yellow;
+        }
+    </style>
     <script>
         function change(idName) {
             if (document.getElementById(idName).style.display === 'none') {
@@ -13,91 +22,91 @@
             }
             return false;
         }
-        // // сортировка таблицы
-        // // использовать делегирование!
-        // // должно быть масштабируемо:
-        // // код работает без изменений при добавлении новых столбцов и строк
-        // window.onload = function() {
-        //     let grid = document.getElementById('grid');
-        //     grid.onclick = function (e) {
-        //         if (e.target.tagName.toLowerCase() !== 'th') return;
-        //
-        //         // Если TH -- сортируем
-        //         sortGrid(e.target.cellIndex, e.target.getAttribute('data-type'));
-        //     };
-        //     function sortGrid(colNum, type) {
-        //         let tbody = grid.getElementsByTagName('tbody')[0];
-        //         // Составить массив из TR
-        //         let rowsArray = [].slice.call(tbody.rows);
-        //         // определить функцию сравнения, в зависимости от типа
-        //         let compare;
-        //         switch (type) {
-        //             case 'number':
-        //                 compare = function (rowA, rowB) {
-        //                     let a = parseFloat(rowA.cells[colNum].innerHTML.replace('$', ''));
-        //                     let b = parseFloat(rowB.cells[colNum].innerHTML.replace('$', ''));
-        //                     return a - b;
-        //                 };
-        //                 break;
-        //             case 'string':
-        //                 compare = function (rowA, rowB) {
-        //                     let a = rowA.cells[colNum].innerHTML;
-        //                     let b = rowB.cells[colNum].innerHTML;
-        //                     return a.localeCompare(b);
-        //                 };
-        //                 break;
-        //             case 'name':
-        //                 compare = function (rowA, rowB) {
-        //                     let a = rowA.cells[colNum].getAttribute('data-name').replace('Mr. ', '').replace('Ms. ', '');
-        //                     let b = rowB.cells[colNum].getAttribute('data-name').replace('Mr. ', '').replace('Ms. ', '');
-        //                     return a.localeCompare(b);
-        //                 };
-        //                 break;
-        //             case 'date':
-        //                 compare = function (rowA, rowB) {
-        //                     let a = rowA.cells[colNum].innerHTML;
-        //                     let b = rowB.cells[colNum].innerHTML;
-        //                     return a.localeCompare(b);
-        //                 };
-        //                 break;
-        //         }
-        //
-        //         // сортировать
-        //         rowsArray.sort(compare);
-        //         // Убрать tbody из большого DOM документа для лучшей производительности
-        //         grid.removeChild(tbody);
-        //         // добавить результат в нужном порядке в TBODY
-        //         // они автоматически будут убраны со старых мест и вставлены в правильном порядке
-        //         for (let i = 0; i < rowsArray.length; i++) {
-        //             tbody.appendChild(rowsArray[i]);
-        //         }
-        //         grid.appendChild(tbody);
-        //
-        //     }
-        // };
-        // function tableSearch() {
-        //     let phrase = document.getElementById('search');
-        //     let table = document.getElementById('grid');
-        //     let regPhrase = new RegExp(phrase.value, 'i');
-        //     let flag = false;
-        //
-        //     for (let i = 3; i < table.rows.length; i++) {
-        //         flag = false;
-        //         for (let j = table.rows[i].cells.length - 1; j >= 0; j--) {
-        //             flag = regPhrase.test(table.rows[i].cells[j].innerHTML);
-        //             if (flag) break;
-        //         }
-        //         if (flag) {
-        //             table.rows[i].style.display = "";
-        //
-        //
-        //         } else {
-        //             table.rows[i].style.display = "none";
-        //
-        //         }
-        //
-        //     }
-        // }
+        // сортировка таблицы
+        // использовать делегирование!
+        // должно быть масштабируемо:
+        // код работает без изменений при добавлении новых столбцов и строк
+        window.onload = function() {
+            let grid = document.getElementById('grid');
+            grid.onclick = function (e) {
+                if (e.target.tagName.toLowerCase() !== 'th') return;
+
+                // Если TH -- сортируем
+                sortGrid(e.target.cellIndex, e.target.getAttribute('data-type'));
+            };
+            function sortGrid(colNum, type) {
+                let tbody = grid.getElementsByTagName('tbody')[0];
+                // Составить массив из TR
+                let rowsArray = [].slice.call(tbody.rows);
+                // определить функцию сравнения, в зависимости от типа
+                let compare;
+                switch (type) {
+                    case 'number':
+                        compare = function (rowA, rowB) {
+                            let a = parseFloat(rowA.cells[colNum].innerHTML.replace('$', ''));
+                            let b = parseFloat(rowB.cells[colNum].innerHTML.replace('$', ''));
+                            return a - b;
+                        };
+                        break;
+                    case 'string':
+                        compare = function (rowA, rowB) {
+                            let a = rowA.cells[colNum].innerHTML;
+                            let b = rowB.cells[colNum].innerHTML;
+                            return a.localeCompare(b);
+                        };
+                        break;
+                    case 'name':
+                        compare = function (rowA, rowB) {
+                            let a = rowA.cells[colNum].getAttribute('data-name').replace('Mr. ', '').replace('Ms. ', '');
+                            let b = rowB.cells[colNum].getAttribute('data-name').replace('Mr. ', '').replace('Ms. ', '');
+                            return a.localeCompare(b);
+                        };
+                        break;
+                    case 'date':
+                        compare = function (rowA, rowB) {
+                            let a = rowA.cells[colNum].innerHTML;
+                            let b = rowB.cells[colNum].innerHTML;
+                            return a.localeCompare(b);
+                        };
+                        break;
+                }
+
+                // сортировать
+                rowsArray.sort(compare);
+                // Убрать tbody из большого DOM документа для лучшей производительности
+                grid.removeChild(tbody);
+                // добавить результат в нужном порядке в TBODY
+                // они автоматически будут убраны со старых мест и вставлены в правильном порядке
+                for (let i = 0; i < rowsArray.length; i++) {
+                    tbody.appendChild(rowsArray[i]);
+                }
+                grid.appendChild(tbody);
+
+            }
+        };
+        function tableSearch() {
+            let phrase = document.getElementById('search');
+            let table = document.getElementById('grid');
+            let regPhrase = new RegExp(phrase.value, 'i');
+            let flag = false;
+
+            for (let i = 3; i < table.rows.length; i++) {
+                flag = false;
+                for (let j = table.rows[i].cells.length - 1; j >= 0; j--) {
+                    flag = regPhrase.test(table.rows[i].cells[j].innerHTML);
+                    if (flag) break;
+                }
+                if (flag) {
+                    table.rows[i].style.display = "";
+
+
+                } else {
+                    table.rows[i].style.display = "none";
+
+                }
+
+            }
+        }
     </script>
 </head>
 <body>
