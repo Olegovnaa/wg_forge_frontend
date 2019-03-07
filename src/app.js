@@ -35,7 +35,9 @@ function starConverter(str) {
         return str = "";
     }
 }
-
+function pad(n) {
+    return n < 10 ? '0' + n : n;
+}
 
 export default (function () {
     // YOUR CODE GOES HERE
@@ -43,6 +45,11 @@ export default (function () {
     let usersById = {};
     for(let i = 0; i < users.length; i++) {
         usersById[users[i].id] = users[i];
+    }
+    // make an associative array of users to search by ID
+    let companyById = {};
+    for(let i = 0; i < companies.length; i++) {
+        companyById[companies[i].id] = companies[i];
     }
 
     let tableLoad= '<table id="grid" class="table table-bordered table-hover"><thead class="thead-dark">';
@@ -70,26 +77,31 @@ export default (function () {
         const cardType = String(orders[i].card_type);
         const orderCountry = String(orders[i].order_country);
         const orderIp = String(orders[i].order_ip);
-        // let clickId = "demo"+orderId;
+        let clickId = "demo"+orderId;
         let user = (typeof usersById[userId] !== 'undefined') ? usersById[userId] : null;
         //
-        // let company = user.company_id && (typeof companyById[user.company_id] !== 'undefined') ? companyById[user.company_id] : null;
-        // let birthday = new Date(user.birthday * 1000);
-        // let bdate = birthday.getDate();
-        // let bmonth = birthday.getMonth();
-        // let byear = birthday.getFullYear();
-        // let beIndustry = (company?'Industry:'+ company.industry : null);
+        let company = user.company_id && (typeof companyById[user.company_id] !== 'undefined') ? companyById[user.company_id] : null;
+        let birthday = new Date(user.birthday * 1000);
+        let bdate = birthday.getDate();
+        let bmonth = birthday.getMonth();
+        let byear = birthday.getFullYear();
+        let beIndustry = (company?'Industry:'+ company.industry : null);
         if (user) {
             tableLoad += '<tr id="order_' + orderId + '">';
-            tableLoad += '<td>' + transactionId + '</td>\n' +
-                '    <td class="user_data" data-name="'+user.first_name + ' ' + user.last_name+'"">' +
-                '<a onclick="return change(\'' + clickId + '\')" href="#" >' + (user.gender === "Male" ? "Mr. " : "Ms. ") + user.first_name + ' ' + user.last_name + '</a>'+
-                '<div class="user-details"> <p>Birthday: 01/02/1991</p> <p><img src="" width="100px"></p> <p>Company: <a href="http://awesome.website">Bumbershoot Corp.</a></p> <p>Industry: Apparel / Consumer Services</p></div></td>' +
-                '    <td>' + timeConverter(createdAt) + '</td>\n' +
-                '    <td>$' + totalPay + '</td>\n' +
-                '    <td>' + cardNumber + '</td>\n' +
-                '    <td>' + cardType + '</td>\n' +
-                '    <td>' + orderCountry + ' (' + orderIp + ')<td>';
+            tableLoad += '<td>' + transactionId + '</td>';
+            tableLoad += '<td class="user_data" data-name="'+user.first_name + ' ' + user.last_name+'">' +
+                '<a onclick="return change(\'' + clickId + '\')" href="#" >' + (user.gender === "Male" ? "Mr. " : "Ms. ") + user.first_name + ' ' + user.last_name + '</a>' +
+                '<div style="display:none" id="' + clickId + '" class="user-details"> ' +
+                '<p>Birthday: ' + pad(bmonth + 1) + "/" + pad(bdate) + "/" + byear + '</p>' +
+                '<p><img alt="" src="' + user.avatar + '" width="100px"></p>' +
+                '<p>'+(company?'Company: <a href="'+company.url+'" target="_blank">' +  company.title+ '</a>':'')+'</p>' +
+                '<p>' +beIndustry+ '</p>' +
+                '</div></td>';
+            tableLoad += '<td>' + timeConverter(createdAt) + '</td>';
+            tableLoad += '<td>$' + totalPay + '</td>';
+            tableLoad += ' <td>' + cardNumber + '</td>';
+            tableLoad += ' <td>' + cardType + '</td>';
+            tableLoad += ' <td>' + orderCountry + ' (' + orderIp + ')<td>';
             tableLoad += '</tr>';
         }
     }
