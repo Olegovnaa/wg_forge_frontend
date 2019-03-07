@@ -1,6 +1,7 @@
 // this is an example of improting data from JSON
 import orders from '../data/orders.json';
-
+import users from '../data/users.json';
+import companies from '../data/companies.json';
 export default (function () {
     // YOUR CODE GOES HERE
     // next line is for example only
